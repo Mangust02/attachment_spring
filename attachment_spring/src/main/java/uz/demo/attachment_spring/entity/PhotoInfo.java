@@ -29,6 +29,7 @@ public class PhotoInfo {
 
     @UpdateTimestamp
     @Column(nullable = false, updatable = false)
+
     private Timestamp updateAt;
 
     private String name;
