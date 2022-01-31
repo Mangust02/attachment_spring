@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping()
+@RequestMapping("/demo/file")
 public class PhotoInfoController {
+
 }
