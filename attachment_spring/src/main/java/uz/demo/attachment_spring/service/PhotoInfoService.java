@@ -1,5 +1,6 @@
 package uz.demo.attachment_spring.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
@@ -20,6 +21,7 @@ import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 @Service
+@Slf4j
 public class PhotoInfoService {
 
     @Value("${file.folder}")
@@ -40,7 +42,7 @@ public class PhotoInfoService {
             photoInfo.setContentType(multipartFile.getContentType());
             photoInfo.setExtension(getExtension(multipartFile.getOriginalFilename()));
             PhotoInfo save = photoInfoRepository.save(photoInfo);
-
+            try {
             Calendar calendar = new GregorianCalendar();
             File uploadFolder = new File(path+"/"+Quality.ORIGINAL+"/"+calendar.get(Calendar.YEAR) + "/" + calendar.get((Calendar.MONTH) + 1)+"/"+calendar.get(Calendar.DAY_OF_MONTH));
 
@@ -52,11 +54,11 @@ public class PhotoInfoService {
             File file = new File(uploadFolder + "/" + save.getId() + "_" + save.getExtension());
             save.setPathOriginal(file.getAbsolutePath());
 
-            try {
+
                 multipartFile.transferTo(file);
                 photoInfoRepository.save(save);
             } catch (IOException e) {
-                e.printStackTrace();
+                log.error("error", e.getMessage());
             }
 
         }
