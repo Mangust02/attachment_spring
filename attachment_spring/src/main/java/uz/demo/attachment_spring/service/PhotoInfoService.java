@@ -51,7 +51,7 @@ public class PhotoInfoService {
              System.out.println("New Folder created -> " + uploadFolder.getAbsolutePath());
          }
 
-            File file = new File(uploadFolder + "/" + save.getId() + "_" + save.getExtension());
+            File file = new File(uploadFolder + "/" + save.getId() + "_"+ save.getName() + save.getExtension());
             save.setPathOriginal(file.getAbsolutePath());
 
 
