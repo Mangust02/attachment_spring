@@ -67,7 +67,7 @@ public class PhotoInfoService {
     public String getExtension(String fileName) {
         String e = null;
 
-        if (fileName != null && fileName.isEmpty()) {
+        if (fileName != null &&!fileName.isEmpty()) {
             int point = fileName.lastIndexOf(".");
             if (point > 0 && point <= fileName.length() - 2) {
                 e = fileName.substring(point);

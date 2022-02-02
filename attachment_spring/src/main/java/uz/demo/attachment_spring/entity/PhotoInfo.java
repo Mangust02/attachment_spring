@@ -16,6 +16,7 @@ import java.sql.Timestamp;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity(name = "photo_info")
+//@Table(uniqueConstraint = {@UniqueConstraint(columnNames ={"name", "size","contetntType"})})
 public class PhotoInfo {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
