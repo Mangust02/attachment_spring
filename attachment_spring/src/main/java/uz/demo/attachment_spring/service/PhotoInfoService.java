@@ -14,6 +14,9 @@ import uz.demo.attachment_spring.payload.Response;
 import uz.demo.attachment_spring.repository.PhotoInfoRepository;
 
 import java.io.File;
+import java.io.IOException;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 
 @Service
@@ -36,9 +39,26 @@ public class PhotoInfoService {
             photoInfo.setName(multipartFile.getOriginalFilename());
             photoInfo.setContentType(multipartFile.getContentType());
             photoInfo.setExtension(getExtension(multipartFile.getOriginalFilename()));
-            photoInfoRepository.save(photoInfo);
+            PhotoInfo save = photoInfoRepository.save(photoInfo);
 
-            File fileUploader = new File(path + "/" + Quality.ORIGINAL + "/");
+            Calendar calendar = new GregorianCalendar();
+            File uploadFolder = new File(path+"/"+Quality.ORIGINAL+"/"+calendar.get(Calendar.YEAR) + "/" + calendar.get((Calendar.MONTH) + 1)+"/"+calendar.get(Calendar.DAY_OF_MONTH));
+
+         if (uploadFolder.mkdirs()&&uploadFolder.exists()){
+
+             System.out.println("New Folder created -> " + uploadFolder.getAbsolutePath());
+         }
+
+            File file = new File(uploadFolder + "/" + save.getId() + "_" + save.getExtension());
+            save.setPathOriginal(file.getAbsolutePath());
+
+            try {
+                multipartFile.transferTo(file);
+                photoInfoRepository.save(save);
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
         }
     return ResponseEntity.status(HttpStatus.ACCEPTED).body(new Response("save", HttpStatus.ACCEPTED.value()));
     }
